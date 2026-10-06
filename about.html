@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Usage Monitor and Skill Protection — How it works</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0f1115; color: #e6e8eb; line-height: 1.55;
+      max-width: 760px; margin: 0 auto; padding: 40px 24px 80px;
+    }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .lede { color: #9aa0a6; font-size: 14px; margin: 0 0 32px; }
+    h2 { font-size: 17px; margin: 34px 0 10px; border-bottom: 1px solid #2b2f36; padding-bottom: 6px; }
+    h3 { font-size: 14px; margin: 18px 0 6px; color: #cbd1d8; }
+    p { font-size: 14px; }
+    .muted { color: #9aa0a6; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+    .card { background: #171a1f; border: 1px solid #2b2f36; border-radius: 8px; padding: 12px 14px; }
+    .card .name { font-weight: 600; font-size: 14px; }
+    .card .desc { font-size: 13px; color: #b6bcc4; margin-top: 3px; }
+    .card .ex { font-size: 12px; color: #9aa0a6; margin-top: 6px; font-style: italic; }
+    ul { padding-left: 18px; margin: 6px 0; }
+    li { font-size: 13px; margin: 4px 0; }
+    .pill { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-right: 4px; }
+    .high { background: #3a1414; color: #f87171; }
+    .med { background: #3a3214; color: #fcd34d; }
+    .low { background: #1a1f26; color: #9aa0a6; }
+    .spine { background: #12161c; border-left: 3px solid #60a5fa; padding: 10px 14px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+    .spine.two { border-left-color: #86efac; }
+    code { background: #1a1f26; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+    .foot { margin-top: 40px; color: #6b7280; font-size: 12px; border-top: 1px solid #2b2f36; padding-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>AI Usage Monitor and Skill Protection</h1>
+  <p class="lede">A quick guide to how it reads your AI prompts — what it measures, and why.</p>
+
+  <p>The idea: AI is great at giving answers, but if you hand it the <em>thinking</em> too,
+  the underlying skill quietly fades (deliberate-practice and testing-effect research — Ericsson;
+  Roediger &amp; Karpicke; Bjork). This tool reads each prompt you send to an AI, works out whether
+  it's a moment where your own thinking matters, and — only then — nudges you to bring it first.</p>
+
+  <h2>1. What you're asking AI to do — the category</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="name">Lookup <span class="pill low">low</span></div>
+      <div class="desc">Finding a fact or definition. AI is a reference book — fine to delegate.</div>
+      <div class="ex">"What's the difference between OKRs and KPIs?"</div>
+    </div>
+    <div class="card">
+      <div class="name">Draft — execution <span class="pill low">low</span></div>
+      <div class="desc">The thinking is done; AI is the typist (format, fix, shorten).</div>
+      <div class="ex">"Format this into a clean bulleted table."</div>
+    </div>
+    <div class="card">
+      <div class="name">Draft — thinking <span class="pill high">high</span></div>
+      <div class="desc">The content/argument IS the work (persuade, propose, frame). Your reasoning is the point.</div>
+      <div class="ex">"Write a memo to persuade my VP to fund the pilot."</div>
+    </div>
+    <div class="card">
+      <div class="name">Think <span class="pill high">high</span></div>
+      <div class="desc">A judgment, decision, or strategy call — where the thinking itself matters most.</div>
+      <div class="ex">"Should we move our product from B2C to B2B?"</div>
+    </div>
+  </div>
+  <p class="muted">A fifth bucket, <b>Undetermined</b>, covers operational chatter ("yes", "continue",
+  "thanks") — not a real work task, never nudged, excluded from your stats.</p>
+
+  <h2>2. Did you bring your own thinking — the protective behaviors</h2>
+  <p>These are the things that keep the skill yours. They fall on two spines:</p>
+
+  <div class="spine">
+    <h3>Spine 1 — Test yourself (protect the skill)</h3>
+    <ul>
+      <li><b>Hypothesis first</b> — offer your own answer/view before asking.</li>
+      <li><b>Questioned the output</b> — push back on or doubt the AI's answer.</li>
+      <li><b>Went deeper</b> — ask why / for the root cause.</li>
+      <li><b>Challenged the source</b> — ask for evidence or reliability.</li>
+      <li><b>Active recall</b> — try to remember before looking it up.</li>
+      <li><b>Hypothesized the answer</b> — guess before checking.</li>
+      <li><b>Iterated on the output</b> — refine and push a prior answer further.</li>
+    </ul>
+  </div>
+
+  <div class="spine two">
+    <h3>Spine 2 — Bring what AI can't (protect your unique value)</h3>
+    <ul>
+      <li><b>Human experience</b> — reason from your own past / expertise.</li>
+      <li><b>Combined ideas</b> — connect it to another idea of yours.</li>
+      <li><b>Combined domains / analogy</b> — apply a lesson from a different field.</li>
+      <li><b>Extended from the source</b> — do something with a fact, not just take it.</li>
+      <li><b>Brought content / outline</b> — supply your own points or structure.</li>
+    </ul>
+  </div>
+
+  <h2>3. When it nudges you — the risk</h2>
+  <p>Risk is <b>category + whether you brought reasoning</b>:</p>
+  <ul>
+    <li><span class="pill high">high</span> High-stakes task (Think / Draft-thinking) with <b>no</b> protective behavior — it nudges.</li>
+    <li><span class="pill med">medium</span> Same task, but you brought your own thinking — no nudge.</li>
+    <li><span class="pill low">low</span> Lookup, execution, or operational — never nudges.</li>
+  </ul>
+  <p class="muted">The nudge fires <b>before</b> the prompt is sent — while the thinking is still yours to do —
+  and asks you to bring a hypothesis, then asks the AI to challenge it rather than just agree.</p>
+
+  <h2>4. How it decides (heuristics first, AI for the hard calls)</h2>
+  <p>Fast keyword heuristics handle the clear cases instantly and for free. Only when a prompt is
+  ambiguous, <em>or</em> looks high-risk (about to nudge), does it ask an LLM to double-check by
+  <em>meaning</em> — catching reasoning phrased in ways keywords miss (e.g. <code>"back when I ran a
+  similar launch"</code> = human experience). The LLM informs the judgment; the risk rules stay fixed.</p>
+
+  <h2>5. FAQ — when (and why) you get nudged</h2>
+
+  <h3>When exactly does it nudge me?</h3>
+  <p>Only when a prompt is <b>high-risk</b>: a Think or Draft-thinking task where you brought
+  <b>no</b> reasoning of your own. That's the one moment where handing off the thinking costs you
+  the skill. Lookups, formatting, and prompts where you already showed your thinking are left alone.</p>
+
+  <h3>Why did it nudge me on something I'd already thought about?</h3>
+  <p>The fast heuristic only spots reasoning phrased in familiar ways. If your thinking was worded
+  differently, it can miss it — which is why high-risk prompts get a second, meaning-based check.
+  If it still nudged you, you can just skip; skipping is one click and always sends your prompt as-is.</p>
+
+  <h3>Why didn't it nudge me on a big decision?</h3>
+  <p>Two likely reasons: you already brought a hypothesis, experience, or pushback (so it counts you as
+  engaged), or the prompt read as a simple lookup. It errs toward <em>not</em> interrupting — over-nudging
+  kills the habit.</p>
+
+  <h3>Does it change or send my prompt for me?</h3>
+  <p>Never silently. If you write a hypothesis in the nudge, it's <b>added</b> to your prompt (you can see
+  it), along with a note asking the AI to challenge your thinking rather than just agree. Skip, and your
+  original goes exactly as typed.</p>
+
+  <h3>Can I turn it off?</h3>
+  <p>Yes — nudges and tracking can each be toggled off. It's a practice aid, not a gate.</p>
+
+  <h2>6. The research</h2>
+  <p>The tool is built on well-established findings in learning science:</p>
+  <ul>
+    <li><b>Testing effect / retrieval practice</b> — actively retrieving or generating an answer strengthens
+      memory far more than passively reading one. <span class="muted">(Roediger &amp; Karpicke,
+      <i>Science</i>, 2008.)</span></li>
+    <li><b>Desirable difficulties</b> — a bit of effortful struggle during learning slows you down but builds
+      durable, transferable skill. <span class="muted">(Bjork; Soderstrom &amp; Bjork, 2015.)</span></li>
+    <li><b>Deliberate practice</b> — skill grows from focused, effortful reps, not passive exposure.
+      <span class="muted">(Ericsson.)</span></li>
+    <li><b>Spacing effect</b> — retrieval is worth more the longer since you last touched the material; the
+      basis of the "recall what you looked up" check. <span class="muted">(Ebbinghaus; Cepeda et al., 2006.)</span></li>
+    <li><b>Consider-the-opposite</b> — deliberately generating alternatives reduces confirmation bias and
+      overconfidence; why the nudge asks the AI to challenge you and offer other angles.
+      <span class="muted">(Lord, Lepper &amp; Preston, 1984.)</span></li>
+    <li><b>LLM sycophancy</b> — a documented tendency of AI assistants to agree with the user; the reason
+      bringing a hypothesis alone isn't enough, and we explicitly ask for pushback.</li>
+  </ul>
+  <p class="muted">Beyond these mechanisms, a growing body of applied work has observed skill and judgment
+  decline with heavy, unstructured reliance on AI, and better outcomes when AI use is deliberate and
+  structured. Those studies motivate the approach; the mechanisms above are what the tool actually acts on.</p>
+
+  <div class="foot">
+    Leading indicators only — this measures behaviors, not a direct proof of skill change.
+    Built as a personal experiment in protecting thinking while using AI.
+  </div>
+</body>
+</html>

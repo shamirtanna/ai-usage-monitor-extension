@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — AI Usage Monitor and Skill Protection</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; background: #0f1115;
+      color: #e6e8eb; line-height: 1.6; max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .updated { color: #9aa0a6; font-size: 13px; margin: 0 0 28px; }
+    h2 { font-size: 17px; margin: 30px 0 8px; border-bottom: 1px solid #2b2f36; padding-bottom: 6px; }
+    p, li { font-size: 14px; }
+    .muted { color: #9aa0a6; }
+    strong { color: #cbd1d8; }
+    code { background: #1a1f26; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="updated">AI Usage Monitor and Skill Protection · Last updated: 2026-10-03</p>
+
+  <p>This extension helps you keep your own thinking sharp while using AI assistants. It is built
+  <strong>privacy-first</strong>: by default, nothing you type leaves your browser. This policy explains
+  exactly what data is handled, where it goes, and the choices you control.</p>
+
+  <h2>What the extension does</h2>
+  <p>When you send a prompt to a supported AI site (currently Claude), the extension reads the text of that
+  prompt, classifies it (e.g. a lookup, a draft, or a judgment task), and , for high-stakes prompts , may
+  show you a brief nudge to bring your own thinking before you send. It also keeps simple statistics so you
+  can review your patterns.</p>
+
+  <h2>What is stored, and where</h2>
+  <ul>
+    <li><strong>Your interaction history is stored locally in your browser</strong> (Chrome's extension
+      storage) , on your device, not on our servers. The dashboard (popup) reads from this local store.</li>
+    <li>You can turn off <strong>"Store prompt text"</strong> at any time. With it off, the extension still
+      classifies and shows statistics, but the actual wording of your prompts is <strong>not kept</strong>.</li>
+    <li>We do <strong>not</strong> store your prompt content on any server.</li>
+  </ul>
+
+  <h2>Smart classification modes (your choice)</h2>
+  <p>Classifying ambiguous or high-stakes prompts more accurately can use an AI model. You choose how:</p>
+  <ul>
+    <li><strong>Local (private):</strong> a built-in rule-based classifier runs entirely in your browser.
+      No prompt data leaves your device. No account or key required.</li>
+    <li><strong>Your own key:</strong> the extension sends the prompt directly from your browser to
+      Anthropic's API using <em>your own</em> API key. The prompt goes to your Anthropic account, governed by
+      Anthropic's terms and privacy policy. It does not pass through our servers.</li>
+    <li><strong>Shared server (default):</strong> the prompt is sent to our hosted classifier, which calls
+      Anthropic on your behalf using our key, subject to daily usage limits. In this mode your prompt
+      <strong>passes through our server in transit</strong> to be classified; <strong>we do not store the
+      prompt content.</strong> We keep only anonymous usage counts (see below). Because the prompt reaches
+      our account and Anthropic in this mode, we recommend not using it for highly sensitive content; use
+      Local or Your-own-key mode for that.</li>
+  </ul>
+
+  <h2>What our server logs (metadata only)</h2>
+  <p>In Shared-server mode, our server keeps <strong>anonymous usage metadata</strong> only , a random
+  per-installation identifier and counts of how many classification requests were made (to enforce fair
+  daily usage limits). This identifier is <strong>not</strong> linked to your name, email, or account, and
+  we do <strong>not</strong> log the text of your prompts.</p>
+
+  <h2>Third parties</h2>
+  <p>Depending on the mode you choose, prompt text may be sent to <strong>Anthropic</strong> (the maker of
+  Claude) for classification , either via our server (Shared-server mode) or directly from your browser
+  (Your-own-key mode). Anthropic's handling of that data is governed by Anthropic's own privacy policy. We
+  do not sell or share your data with any other third parties, and we do not use it for advertising.</p>
+
+  <h2>What we never do</h2>
+  <ul>
+    <li>We never sell your data.</li>
+    <li>We never use your prompts for advertising or profiling.</li>
+    <li>We never store your prompt content on our servers.</li>
+    <li>We do not collect your name, email, or account identity.</li>
+  </ul>
+
+  <h2>Your controls</h2>
+  <ul>
+    <li>Turn <strong>nudges</strong> on/off at any time.</li>
+    <li>Turn <strong>"Store prompt text"</strong> on/off at any time.</li>
+    <li>Choose your <strong>classification mode</strong> (Local / Your own key / Shared server).</li>
+    <li>Clear your local history by removing the extension's stored data (via Chrome's extension settings).</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy? Contact <strong>shamir.tanna@gmail.com</strong>.</p>
+
+  <p class="muted">This extension is an independent personal project and is not affiliated with Anthropic or Claude.</p>
+</body>
+</html>

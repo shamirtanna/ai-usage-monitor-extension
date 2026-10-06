@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock AI Chat (dev surface for Skill Shield)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #0f1115; color: #e8eaed; margin: 0;
+      display: flex; flex-direction: column; height: 100vh;
+    }
+    header { padding: 12px 20px; border-bottom: 1px solid #2b2f36; font-size: 14px; color: #9aa0a6; }
+    #messages { flex: 1; overflow-y: auto; padding: 20px; }
+    .msg { max-width: 700px; margin: 0 auto 16px; padding: 12px 16px; border-radius: 10px; line-height: 1.5; }
+    .user { background: #1a2233; }
+    .ai { background: #171a1f; border: 1px solid #2b2f36; }
+    .role { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #9aa0a6; margin-bottom: 6px; }
+    footer { padding: 16px 20px; border-top: 1px solid #2b2f36; }
+    .composer { max-width: 700px; margin: 0 auto; display: flex; gap: 10px; align-items: flex-end; }
+    /* The prompt box — a contenteditable div, like Claude uses (so the adapter is realistic). */
+    #prompt-input {
+      flex: 1; min-height: 48px; max-height: 200px; overflow-y: auto;
+      padding: 12px 14px; border-radius: 10px; border: 1px solid #2b2f36;
+      background: #171a1f; color: #e8eaed; font-size: 15px; outline: none;
+    }
+    #prompt-input:empty:before { content: attr(data-placeholder); color: #6b7280; }
+    #send-btn {
+      padding: 12px 20px; border: none; border-radius: 10px; background: #3b82f6;
+      color: white; font-size: 15px; cursor: pointer;
+    }
+    #send-btn:hover { background: #2f6fe0; }
+  </style>
+</head>
+<body>
+  <header>Mock AI Chat &mdash; local dev surface for the Skill Shield extension (not a real AI)</header>
+
+  <div id="messages">
+    <div class="msg ai">
+      <div class="role">AI</div>
+      Hi! This is a mock AI chat page for building the extension. Type a prompt below and hit Send.
+    </div>
+  </div>
+
+  <footer>
+    <div class="composer">
+      <!-- contenteditable div = mimics Claude's rich-text composer, so the adapter is realistic -->
+      <div id="prompt-input" contenteditable="true" data-placeholder="Message the AI..."></div>
+      <button id="send-btn">Send</button>
+    </div>
+  </footer>
+
+  <script>
+    // Minimal mock behavior: on Send (button click OR Enter), echo the user's
+    // message and give a canned "AI" reply. This is just so the page behaves like
+    // a chat — the EXTENSION is what we're actually building/testing.
+    const input = document.getElementById("prompt-input");
+    const messages = document.getElementById("messages");
+    const sendBtn = document.getElementById("send-btn");
+
+    function send() {
+      const text = input.innerText.trim();
+      if (!text) return;
+      // user message
+      const u = document.createElement("div");
+      u.className = "msg user";
+      u.innerHTML = '<div class="role">You</div>' + text.replace(/</g, "&lt;");
+      messages.appendChild(u);
+      // canned AI reply
+      const a = document.createElement("div");
+      a.className = "msg ai";
+      a.innerHTML = '<div class="role">AI</div>(Mock reply) I received your message.';
+      messages.appendChild(a);
+      input.innerText = "";
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", send);
+    // Enter sends (Shift+Enter = newline), like most AI chats.
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    });
+  </script>
+</body>
+</html>

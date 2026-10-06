@@ -1,0 +1,7 @@
+# Private submission notes (not for the public repo)
+STORE-LISTING.md
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log

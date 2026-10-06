@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #0f1115; color: #e8eaed; margin: 0;
+      width: 340px; padding: 16px;
+    }
+    h1 { font-size: 15px; margin: 0 0 2px; line-height: 1.3; }
+    .sub { font-size: 11px; color: #9aa0a6; margin: 0 0 14px; }
+    .settings { margin-top: 20px; border-top: 1px solid #2b2f36; padding-top: 10px; }
+    .settings summary { font-size: 12px; color: #9aa0a6; cursor: pointer; list-style: none;
+      padding: 4px 0; user-select: none; }
+    .settings summary::before { content: "\25B8"; display: inline-block; margin-right: 6px;
+      transition: transform .15s; }
+    .settings[open] summary::before { transform: rotate(90deg); }
+    .settings summary:hover { color: #e6e8eb; }
+    .settings .toggles { margin-top: 10px; }
+    .toggles { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
+    .toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: #171a1f; border: 1px solid #2b2f36; border-radius: 6px;
+      padding: 10px 12px; cursor: pointer; }
+    .toggle .t-label { display: flex; flex-direction: column; font-size: 13px; }
+    .toggle .t-desc { font-size: 11px; color: #9aa0a6; margin-top: 2px; font-weight: 400; }
+    .toggle input { accent-color: #86efac; width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+    .mode { background: #171a1f; border: 1px solid #2b2f36; border-radius: 6px; padding: 10px 12px; margin: 0 0 18px; }
+    .mode-title { font-size: 13px; margin-bottom: 6px; }
+    #mode-select { width: 100%; background: #0f1115; color: #e6e8eb; border: 1px solid #2b2f36;
+      border-radius: 5px; padding: 6px 8px; font-size: 12px; }
+    .key-row { margin-top: 8px; }
+    #api-key { width: 100%; box-sizing: border-box; background: #0f1115; color: #e6e8eb;
+      border: 1px solid #2b2f36; border-radius: 5px; padding: 6px 8px; font-size: 12px; }
+    .mode-desc { font-size: 11px; color: #9aa0a6; margin-top: 6px; line-height: 1.4; }
+    .site-line { font-size: 11px; color: #60a5fa; margin-bottom: 10px; }
+    .prompt-row .good { color: #86efac; font-weight: 600; }
+    .prompt-row .warn { color: #fcd34d; font-weight: 600; }
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .metric { background: #171a1f; border: 1px solid #2b2f36; border-radius: 8px; padding: 10px; }
+    .metric .num { font-size: 22px; font-weight: 700; }
+    .metric .label { font-size: 10px; color: #9aa0a6; margin-top: 2px; }
+    .num.good { color: #86efac; }
+    .num.warn { color: #fcd34d; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: .05em;
+      color: #9aa0a6; margin: 22px 0 8px; }
+    .prompt-row { font-size: 12px; padding: 6px 8px; background: #171a1f;
+      border: 1px solid #2b2f36; border-radius: 6px; margin-bottom: 5px; }
+    .prompt-row .cat { color: #60a5fa; font-size: 10px; }
+    .prompt-row .meta { font-size: 10px; }
+    .prompt-row .ok { color: #86efac; }
+    .prompt-row .none { color: #9aa0a6; }
+    .prompt-row .warn-t { color: #fcd34d; }
+    .prompt-row .risk-high { color: #f87171; }
+    .prompt-row .risk-medium { color: #fcd34d; }
+    .prompt-row .risk-low { color: #9aa0a6; }
+    .empty { color: #9aa0a6; font-size: 12px; }
+    .recall-btn { margin-top: 6px; padding: 6px 12px; border: none; border-radius: 6px;
+      background: #3b82f6; color: white; font-size: 12px; cursor: pointer; }
+    .recall-btn:hover { background: #2f6fe0; }
+    .foot { font-size: 11px; margin-top: 16px; line-height: 1.4; }
+    .foot a { color: #60a5fa; text-decoration: none; }
+    .foot a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>AI Usage Monitor and Skill Protection</h1>
+  <p class="sub" id="subtitle">Your AI usage today</p>
+
+  <!-- Stats first — this is what you want to see when you open the popup. -->
+  <div id="content"><p class="empty">Loading…</p></div>
+
+  <!-- Testing your learning — secondary/proactive, collapsed like Settings. -->
+  <details class="settings" id="recall-details">
+    <summary>Testing your learning</summary>
+    <div id="recall"></div>
+  </details>
+
+  <!-- Settings collapsed by default (native <details> disclosure, no JS needed). -->
+  <details class="settings">
+    <summary>Settings</summary>
+    <div class="toggles">
+      <label class="toggle">
+        <span class="t-label">Store prompt text<span class="t-desc">Keep the actual wording of your prompts. Stats and nudges work either way; turning this off disables the recall / "testing your learning" feature.</span></span>
+        <input type="checkbox" id="toggle-store">
+      </label>
+      <label class="toggle">
+        <span class="t-label">Nudges<span class="t-desc">Prompt you to bring your own thinking on high-risk prompts</span></span>
+        <input type="checkbox" id="toggle-nudges">
+      </label>
+    </div>
+
+    <div class="mode">
+      <div class="mode-title">Smarter classification</div>
+      <select id="mode-select">
+        <option value="server">Shared server — smart, no setup (default; daily limit)</option>
+        <option value="own-key">Your Claude key — direct to Anthropic, your account</option>
+        <option value="local">Local only — private, nothing leaves your browser</option>
+      </select>
+      <div id="key-row" class="key-row" style="display:none;">
+        <input type="password" id="api-key" placeholder="sk-ant-... (stored only in this browser)">
+      </div>
+      <div class="mode-desc" id="mode-desc"></div>
+    </div>
+  </details>
+
+  <div class="foot"><a id="about-link" href="about.html" target="_blank">How this works — the framework &amp; examples</a></div>
+  <script src="storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

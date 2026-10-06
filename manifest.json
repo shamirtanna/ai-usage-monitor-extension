@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "AI Usage Monitor and Skill Protection",
+  "version": "1.0.0",
+  "description": "Detects passive AI delegation and nudges you to keep your thinking sharp.",
+
+  "//permissions": "storage = the extension's local history + settings. (activeTab removed — unused; Claude access comes from content_scripts + host_permissions.)",
+  "permissions": ["storage"],
+
+  "//host_permissions": "the hosted classifier server (mode 'server'); api.anthropic.com = direct Claude calls in 'own-key' mode. Without these, Chrome blocks the content script's cross-origin fetches.",
+  "host_permissions": ["https://ai-usage-monitor-server.onrender.com/*", "https://api.anthropic.com/*"],
+
+  "//action": "Defines the toolbar icon + the popup window that opens on click.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI Usage Monitor and Skill Protection",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "//icons": "Shown in the toolbar, extensions page, and Chrome Web Store listing.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "//content_scripts": "INJECTS our JS into claude.ai pages. 'js' lists the files to inject, in order — adapter first, then classifier/storage, then the shared content script.",
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["adapters/claude.js", "classifier.js", "llm_classify.js", "storage.js", "content.js"],
+      "css": ["nudge.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
