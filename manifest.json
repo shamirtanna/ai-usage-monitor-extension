@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AI Usage Monitor and Skill Protection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detects passive AI delegation and nudges you to keep your thinking sharp.",
 
   "//permissions": "storage = the extension's local history + settings. (activeTab removed — unused; Claude access comes from content_scripts + host_permissions.)",

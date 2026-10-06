@@ -115,23 +115,19 @@
     const sub = document.getElementById("subtitle");
     if (sub) sub.textContent = "Your AI usage today — on " + siteList;
 
-    // Per-category SKILL-PROTECTION rate — only for Think & Draft (the categories
-    // where bringing your own thinking matters). We don't push thinking on Lookup,
-    // so we show its count but not a protection %. "brought your thinking" = any
-    // protective behavior detected on that task.
-    function protectRate(cat) {
-      const inCat = tasks.filter(function (r) { return r.category === cat; });
-      if (!inCat.length) return null;
-      const withB = inCat.filter(function (r) { return (r.behaviors || []).length > 0; }).length;
-      return Math.round(100 * withB / inCat.length);
-    }
+    // Count each protective behavior that occurred today (by sub-behavior name).
+    const behaviorCounts = {};
+    tasks.forEach(function (r) {
+      (r.behaviors || []).forEach(function (b) {
+        const name = (typeof b === "object") ? (b.sub_behavior || b.behavior) : b;
+        if (name) behaviorCounts[name] = (behaviorCounts[name] || 0) + 1;
+      });
+    });
 
-    // Build the HTML. Order (per design): categories first, then per-category
-    // skill-protection %. No spine line here (that framework lives in the digest/about).
     let html = '';
 
-    // 1) What you used AI for today (counts).
-    html += '<div class="section-title">What you used AI for today</div>';
+    // 1) What categories you used AI for today (counts).
+    html += '<div class="section-title">What categories you used AI for today</div>';
     ["Think", "Draft", "Lookup"].forEach(function (cat) {
       if (cats[cat]) html += '<div class="prompt-row">' + cat + ': ' + cats[cat] + '</div>';
     });
@@ -140,19 +136,17 @@
         + uncategorized + ' operational (not counted)</div>';
     }
 
-    // 2) Skill protection % — Think & Draft only (not Lookup).
-    html += '<div class="section-title">Skill protection</div>';
-    let anyProtect = false;
-    ["Think", "Draft"].forEach(function (cat) {
-      const rate = protectRate(cat);
-      if (rate === null) return;
-      anyProtect = true;
-      const cls = rate >= 40 ? "good" : "warn";
-      html += '<div class="prompt-row">' + cat + ': brought your thinking on '
-        + '<span class="' + cls + '">' + rate + '%</span></div>';
-    });
-    if (!anyProtect) {
-      html += '<div class="empty">No Think or Draft tasks yet today.</div>';
+    // 2) Your skill-protection behaviors — a simple tally of the ones that happened.
+    html += '<div class="section-title">Your skill-protection behaviors</div>';
+    const behaviorNames = Object.keys(behaviorCounts);
+    if (behaviorNames.length === 0) {
+      html += '<div class="empty">None yet today — the nudge will prompt you on high-stakes prompts.</div>';
+    } else {
+      behaviorNames.sort(function (a, b) { return behaviorCounts[b] - behaviorCounts[a]; });
+      behaviorNames.forEach(function (name) {
+        html += '<div class="prompt-row"><span class="ok">' + escapeHtml(name)
+          + '</span>: ' + behaviorCounts[name] + '</div>';
+      });
     }
 
     // Last few prompts — show category/risk, protective behaviors, and nudge outcome.

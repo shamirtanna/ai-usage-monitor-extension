@@ -18,6 +18,7 @@ window.SkillShieldStorage = {
   logInteraction: function (record) {
     const KEY = this.KEY;
     const self = this;
+    if (!(window.chrome && chrome.storage && chrome.storage.local)) return; // can't log; don't crash
     record = Object.assign({ timestamp: new Date().toISOString() }, record);
     this.getSettings(function (settings) {
       if (!settings.storePrompts) {
@@ -67,6 +68,7 @@ window.SkillShieldStorage = {
   // once and persisted. (A user could reset it; the server's GLOBAL cap is the
   // real backstop against that — see quota.py.)
   getUserId: function (callback) {
+    if (!(window.chrome && chrome.storage && chrome.storage.local)) { callback("anon"); return; }
     chrome.storage.local.get(["userId"], function (data) {
       if (data.userId) { callback(data.userId); return; }
       const id = "u_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -76,6 +78,13 @@ window.SkillShieldStorage = {
 
   getSettings: function (callback) {
     const self = this;
+    // chrome.storage can be briefly unavailable (e.g. extension context not yet
+    // ready / reloading). Degrade to defaults instead of throwing and killing the
+    // send flow.
+    if (!(window.chrome && chrome.storage && chrome.storage.local)) {
+      callback(Object.assign({}, self.DEFAULT_SETTINGS));
+      return;
+    }
     chrome.storage.local.get([this.SETTINGS_KEY], function (data) {
       // Merge stored over defaults so a missing flag falls back to ON.
       callback(Object.assign({}, self.DEFAULT_SETTINGS, data[self.SETTINGS_KEY] || {}));
